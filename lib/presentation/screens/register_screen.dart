@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../constants.dart';
-import '../functions/build_sign_up.dart';
-import '../widgets/custom_button.dart';
-import '../widgets/custom_text_field.dart';
+import '../../constants.dart';
+import 'functions/build_sign_up.dart';
 import 'login_screen.dart';
+import 'widgets/custom_button.dart';
+import 'widgets/custom_text_field.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({super.key});
 
   @override
   State<RegisterScreen> createState() => _LoginScreenUIState();

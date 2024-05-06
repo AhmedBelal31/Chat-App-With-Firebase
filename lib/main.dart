@@ -1,6 +1,7 @@
-import 'package:chat_app/registration_screens_ui/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'presentation/screens/login_screen.dart';
 
 void main() {
   runApp(const MyApp());

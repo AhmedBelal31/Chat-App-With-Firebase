@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../constants.dart';
-import '../functions/build_forget_password.dart';
-import '../functions/build_sign_in_with_text.dart';
-import '../functions/build_sign_up.dart';
-import '../widgets/custom_button.dart';
-import '../widgets/custom_text_field.dart';
-import '../widgets/social_media_icons.dart';
+import '../../constants.dart';
+import 'functions/build_forget_password.dart';
+import 'functions/build_sign_in_with_text.dart';
+import 'functions/build_sign_up.dart';
 import 'register_screen.dart';
+import 'widgets/custom_button.dart';
+import 'widgets/custom_text_field.dart';
+import 'widgets/social_media_icons.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

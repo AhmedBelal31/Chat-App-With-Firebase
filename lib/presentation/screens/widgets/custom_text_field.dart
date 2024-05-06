@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
+import '../../../constants.dart';
+
 
 class CustomTextFormField extends StatelessWidget {
   CustomTextFormField(
-      {Key? key,
+      {super.key,
       required this.labelText,
       required this.hintText,
       required this.prefixIcon,
       this.obscureText,
-      this.keyboardType})
-      : super(key: key);
+      this.keyboardType});
 
   final String labelText;
 
