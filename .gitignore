@@ -142,3 +142,6 @@ app.*.symbols
 /macos/
 /web/
 /windows/
+firebase_options.dart
+android/app/google-services.json
+firebase.json
