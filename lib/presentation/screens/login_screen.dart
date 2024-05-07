@@ -20,6 +20,10 @@ class _LoginScreenState extends State<LoginScreen> {
   bool rememberMe = false;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  AutovalidateMode autoValidateMode = AutovalidateMode.disabled;
+
+  var formKey = GlobalKey<FormState>();
+
   final scaffoldDecoration = const BoxDecoration(
     gradient: LinearGradient(colors: [
       Color(0xFF73AEF5),
@@ -46,60 +50,86 @@ class _LoginScreenState extends State<LoginScreen> {
                 horizontal: 40,
                 vertical: 120,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Sign In ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 30,
+              child: Form(
+                key: formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Sign In ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 30,
+                        ),
                       ),
                     ),
-                  ),
-                  defaultSizedBox(),
-                  CustomTextFormField(
-                    controller: emailController,
-                    labelText: 'Email',
-                    hintText: 'Enter Your Email ',
-                    prefixIcon: Icons.email,
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  defaultSizedBox(),
-                  CustomTextFormField(
-                    controller: passwordController,
-                    labelText: 'Password',
-                    hintText: 'Enter Your Password ',
-                    prefixIcon: Icons.lock,
-                    obscureText: true,
-                  ),
-                  const SizedBox(height: 15),
-                  buildForgetPassword(),
-                  buildRememberMeCheckBox(),
-                  const SizedBox(height: 15),
-                  CustomButton(
-                    text: 'LOGIN',
-                    onPressed: () async {
-                      var user = await FirebaseAuth.instance.signInWithEmailAndPassword(
-                        email: emailController.text,
-                        password: passwordController.text,
-                      );
-                    },
-                  ),
-                  defaultSizedBox(height: 15),
-                  buildSignInWithText(),
-                  defaultSizedBox(),
-                  const SocialMediaIcons(),
-                  defaultSizedBox(),
-                  buildHaveAccount(
-                    context,
-                    haveAnAccount: 'Don\'t have an account ? ',
-                    signInOrUp: ' Sign Up ',
-                    page: const RegisterScreen(),
-                  ),
-                ],
+                    defaultSizedBox(),
+                    CustomTextFormField(
+                      controller: emailController,
+                      autoValidateMode: autoValidateMode,
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Name required';
+                        } else {
+                          return null;
+                        }
+                      },
+                      labelText: 'Email',
+                      hintText: 'Enter Your Email ',
+                      prefixIcon: Icons.email,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    defaultSizedBox(),
+                    CustomTextFormField(
+                      controller: passwordController,
+                      autoValidateMode: autoValidateMode,
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Password required';
+                        } else {
+                          return null;
+                        }
+                      },
+                      labelText: 'Password',
+                      hintText: 'Enter Your Password ',
+                      prefixIcon: Icons.lock,
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 15),
+                    buildForgetPassword(),
+                    buildRememberMeCheckBox(),
+                    const SizedBox(height: 15),
+                    CustomButton(
+                      text: 'LOGIN',
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          var user = await FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                            email: emailController.text,
+                            password: passwordController.text,
+                          );
+                        } else {
+                          setState(() {
+                            autoValidateMode = AutovalidateMode.always;
+                          });
+                        }
+                      },
+                    ),
+                    defaultSizedBox(height: 15),
+                    buildSignInWithText(),
+                    defaultSizedBox(),
+                    const SocialMediaIcons(),
+                    defaultSizedBox(),
+                    buildHaveAccount(
+                      context,
+                      haveAnAccount: 'Don\'t have an account ? ',
+                      signInOrUp: ' Sign Up ',
+                      page: const RegisterScreen(),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
