@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 import 'functions/build_forget_password.dart';
@@ -17,6 +18,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool rememberMe = false;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   final scaffoldDecoration = const BoxDecoration(
     gradient: LinearGradient(colors: [
       Color(0xFF73AEF5),
@@ -58,6 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   defaultSizedBox(),
                   CustomTextFormField(
+                    controller: emailController,
                     labelText: 'Email',
                     hintText: 'Enter Your Email ',
                     prefixIcon: Icons.email,
@@ -65,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   defaultSizedBox(),
                   CustomTextFormField(
+                    controller: passwordController,
                     labelText: 'Password',
                     hintText: 'Enter Your Password ',
                     prefixIcon: Icons.lock,
@@ -74,7 +79,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   buildForgetPassword(),
                   buildRememberMeCheckBox(),
                   const SizedBox(height: 15),
-                  CustomButton(text: 'LOGIN', onPressed: () {}),
+                  CustomButton(
+                    text: 'LOGIN',
+                    onPressed: () async {
+                      var user = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                        email: emailController.text,
+                        password: passwordController.text,
+                      );
+                    },
+                  ),
                   defaultSizedBox(height: 15),
                   buildSignInWithText(),
                   defaultSizedBox(),

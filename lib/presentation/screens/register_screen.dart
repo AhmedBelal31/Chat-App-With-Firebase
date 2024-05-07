@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 import 'functions/build_sign_up.dart';
@@ -14,13 +15,23 @@ class RegisterScreen extends StatefulWidget {
 
 class _LoginScreenUIState extends State<RegisterScreen> {
   bool rememberMe = false;
+
+  var formKey = GlobalKey<FormState>();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  AutovalidateMode autoValidateMode = AutovalidateMode.disabled;
+
   final scaffoldDecoration = const BoxDecoration(
-    gradient: LinearGradient(colors: [
-      Color(0xFF73AEF5),
-      Color(0xFF61A4F1),
-      Color(0xFF478DE0),
-      Color(0xFF398AE5),
-    ]),
+    gradient: LinearGradient(
+      colors: [
+        Color(0xFF73AEF5),
+        Color(0xFF61A4F1),
+        Color(0xFF478DE0),
+        Color(0xFF398AE5),
+      ],
+    ),
   );
 
   @override
@@ -40,65 +51,122 @@ class _LoginScreenUIState extends State<RegisterScreen> {
                 horizontal: 40,
                 vertical: 120,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Sign Up ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 30,
+              child: Form(
+                key: formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Sign Up ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 30,
+                        ),
                       ),
                     ),
-                  ),
-                  defaultSizedBox(),
-                  CustomTextFormField(
-                    labelText: 'Full Name',
-                    hintText: 'Enter Your Name ',
-                    prefixIcon: Icons.person,
-                    keyboardType: TextInputType.name,
-                  ),
-                  defaultSizedBox(),
-                  CustomTextFormField(
-                    labelText: 'Phone No',
-                    hintText: 'Enter Your Phone ',
-                    prefixIcon: Icons.phone,
-                    keyboardType: TextInputType.phone,
-                  ),
-                  defaultSizedBox(),
-                  CustomTextFormField(
-                    labelText: 'Email',
-                    hintText: 'Enter Your Email ',
-                    prefixIcon: Icons.email,
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  defaultSizedBox(),
-                  CustomTextFormField(
-                    labelText: 'Password',
-                    hintText: 'Enter Your Password ',
-                    prefixIcon: Icons.lock,
-                    obscureText: true,
-                  ),
-                  defaultSizedBox(),
-                  CustomTextFormField(
-                    labelText: 'Confirm Password',
-                    hintText: 'Confirm Password ',
-                    prefixIcon: Icons.lock,
-                    obscureText: true,
-                    keyboardType: TextInputType.visiblePassword,
-                  ),
-                  defaultSizedBox(),
-                  CustomButton(text: 'Register', onPressed: () {}),
-                  defaultSizedBox(),
-                  buildHaveAccount(
-                    context,
-                    haveAnAccount: 'Have an account ? ',
-                    signInOrUp: ' Sign In ',
-                    page: const LoginScreen(),
-                  ),
-                ],
+                    defaultSizedBox(),
+                    CustomTextFormField(
+                      controller: nameController,
+                      autoValidateMode: autoValidateMode,
+                      labelText: 'Full Name',
+                      hintText: 'Enter Your Name ',
+                      prefixIcon: Icons.person,
+                      keyboardType: TextInputType.name,
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Name required';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    defaultSizedBox(),
+                    CustomTextFormField(
+                      controller: phoneController,
+                      autoValidateMode: autoValidateMode,
+                      labelText: 'Phone No',
+                      hintText: 'Enter Your Phone ',
+                      prefixIcon: Icons.phone,
+                      keyboardType: TextInputType.phone,
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Phone required';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    defaultSizedBox(),
+                    CustomTextFormField(
+                      labelText: 'Email',
+                      hintText: 'Enter Your Email ',
+                      prefixIcon: Icons.email,
+                      keyboardType: TextInputType.emailAddress,
+                      controller: emailController,
+                      autoValidateMode: autoValidateMode,
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Email required';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    defaultSizedBox(),
+                    CustomTextFormField(
+                      controller: passwordController,
+                      labelText: 'Password',
+                      hintText: 'Enter Your Password ',
+                      prefixIcon: Icons.lock,
+                      obscureText: true,
+                      autoValidateMode: autoValidateMode,
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Password required';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    // defaultSizedBox(),
+                    // CustomTextFormField(
+                    //   controller: passwordController,
+                    //   labelText: 'Confirm Password',
+                    //   hintText: 'Confirm Password ',
+                    //   prefixIcon: Icons.lock,
+                    //   obscureText: true,
+                    //   keyboardType: TextInputType.visiblePassword,
+                    //   validator: (value) {
+                    //    return  value!.isEmpty ? "Please Enter A Value" : value;
+                    //   },
+                    // ),
+                    defaultSizedBox(),
+                    CustomButton(
+                      text: 'Register',
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          UserCredential user = await FirebaseAuth.instance
+                              .createUserWithEmailAndPassword(
+                            email: emailController.text,
+                            password: passwordController.text,
+                          );
+                        } else {
+                          autoValidateMode = AutovalidateMode.always;
+                          setState(() {});
+                        }
+                      },
+                    ),
+                    defaultSizedBox(),
+                    buildHaveAccount(
+                      context,
+                      haveAnAccount: 'Have an account ? ',
+                      signInOrUp: ' Sign In ',
+                      page: const LoginScreen(),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
