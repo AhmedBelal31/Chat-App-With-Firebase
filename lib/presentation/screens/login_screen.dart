@@ -1,6 +1,8 @@
+import 'package:chat_app/presentation/screens/functions/build_password_validation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../constants.dart';
+import 'functions/build_email_validation.dart';
 import 'functions/build_forget_password.dart';
 import 'functions/build_sign_in_with_text.dart';
 import 'functions/build_sign_up.dart';
@@ -70,11 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: emailController,
                       autoValidateMode: autoValidateMode,
                       validator: (value) {
-                        if (value?.isEmpty ?? true) {
-                          return 'Name required';
-                        } else {
-                          return null;
-                        }
+                        return buildEmailValidation(value);
                       },
                       labelText: 'Email',
                       hintText: 'Enter Your Email ',
@@ -86,11 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: passwordController,
                       autoValidateMode: autoValidateMode,
                       validator: (value) {
-                        if (value?.isEmpty ?? true) {
-                          return 'Password required';
-                        } else {
-                          return null;
-                        }
+                        return buildPasswordValidation(value);
                       },
                       labelText: 'Password',
                       hintText: 'Enter Your Password ',
@@ -153,3 +147,16 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

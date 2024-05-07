@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../constants.dart';
+import 'functions/build_email_validation.dart';
+import 'functions/build_password_validation.dart';
 import 'functions/build_sign_up.dart';
 import 'login_screen.dart';
 import 'widgets/custom_button.dart';
@@ -107,11 +109,7 @@ class _LoginScreenUIState extends State<RegisterScreen> {
                       controller: emailController,
                       autoValidateMode: autoValidateMode,
                       validator: (value) {
-                        if (value?.isEmpty ?? true) {
-                          return 'Email required';
-                        } else {
-                          return null;
-                        }
+                        return buildEmailValidation(value);
                       },
                     ),
                     defaultSizedBox(),
@@ -123,25 +121,9 @@ class _LoginScreenUIState extends State<RegisterScreen> {
                       obscureText: true,
                       autoValidateMode: autoValidateMode,
                       validator: (value) {
-                        if (value?.isEmpty ?? true) {
-                          return 'Password required';
-                        } else {
-                          return null;
-                        }
+                        return buildPasswordValidation(value);
                       },
                     ),
-                    // defaultSizedBox(),
-                    // CustomTextFormField(
-                    //   controller: passwordController,
-                    //   labelText: 'Confirm Password',
-                    //   hintText: 'Confirm Password ',
-                    //   prefixIcon: Icons.lock,
-                    //   obscureText: true,
-                    //   keyboardType: TextInputType.visiblePassword,
-                    //   validator: (value) {
-                    //    return  value!.isEmpty ? "Please Enter A Value" : value;
-                    //   },
-                    // ),
                     defaultSizedBox(),
                     CustomButton(
                       text: 'Register',
