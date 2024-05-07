@@ -25,6 +25,16 @@ class _LoginScreenUIState extends State<RegisterScreen> {
   TextEditingController passwordController = TextEditingController();
   AutovalidateMode autoValidateMode = AutovalidateMode.disabled;
 
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    phoneController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   final scaffoldDecoration = const BoxDecoration(
     gradient: LinearGradient(
       colors: [

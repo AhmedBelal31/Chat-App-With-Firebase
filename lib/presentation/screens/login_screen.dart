@@ -26,6 +26,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   var formKey = GlobalKey<FormState>();
 
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
   final scaffoldDecoration = const BoxDecoration(
     gradient: LinearGradient(colors: [
       Color(0xFF73AEF5),
