@@ -1,7 +1,3 @@
-# Chat App With Firebase
-
-A new Flutter project.
-
-## Getting Started
+# Chat App With Firebas
 
 Create A chat App with firebase .
